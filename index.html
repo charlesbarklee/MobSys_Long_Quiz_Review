@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android App Development Exam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .options label {
+            display: block;
+            margin: 5px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>MobSys Long Quiz Review</h1>
+    <div id="quiz"></div>
+    <button onclick="submitQuiz()">Submit</button>
+    <div id="result"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which programming language is the official language for iOS development?",
+                options: ["Java", "Kotlin", "Swift", "C#"],
+                correct: "c"
+            },
+            {
+                question: "What is the role of an Activity in an Android app?",
+                options: ["Manages shared app data", "Runs background operations", "Represents a single screen with a UI", "Delivers system-wide events"],
+                correct: "c"
+            },
+            {
+                question: "Which element is the root of the AndroidManifest.xml file?",
+                options: ["application", "manifest", "activity", "intent-filter"],
+                correct: "b"
+            },
+            {
+                question: "What does the 'wrap_content' attribute do in a layout?",
+                options: ["Makes the view as big as its parent", "Sets the view size to its content", "Aligns the view to the parent", "Hides the view"],
+                correct: "b"
+            },
+            {
+                question: "Which component provides simple feedback in a small popup?",
+                options: ["Notification", "Toast", "Snackbar", "Dialog"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a SharedPreferences file in Android?",
+                options: ["Store large datasets", "Store key-value pairs", "Manage UI layouts", "Handle network requests"],
+                correct: "b"
+            },
+            {
+                question: "Which callback method is invoked when an activity is first launched?",
+                options: ["onStart()", "onResume()", "onCreate()", "onPause()"],
+                correct: "c"
+            },
+            {
+                question: "What type of intent specifies the target activity directly?",
+                options: ["Implicit intent", "Explicit intent", "Action intent", "Category intent"],
+                correct: "b"
+            },
+            {
+                question: "Which image format is recommended for Android drawables?",
+                options: ["BMP", "GIF", "WebP", "SVG"],
+                correct: "c"
+            },
+            {
+                question: "What does a RadioButton restrict the user to?",
+                options: ["Multiple selections", "One selection", "Text input", "Image display"],
+                correct: "b"
+            },
+            {
+                question: "Which IDE is the official environment for Android app development?",
+                options: ["Xcode", "Android Studio", "Xamarin", "Corona"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a Service in an Android app?",
+                options: ["Represents a UI screen", "Performs background operations", "Manages shared data", "Handles user inputs"],
+                correct: "b"
+            },
+            {
+                question: "Which element contains sub-elements declaring app components in AndroidManifest.xml?",
+                options: ["manifest", "activity", "application", "intent-filter"],
+                correct: "c"
+            },
+            {
+                question: "What does the 'match_parent' attribute do in a layout?",
+                options: ["Sets view size to its content", "Hides the view", "Makes view as big as its parent", "Aligns view to center"],
+                correct: "c"
+            },
+            {
+                question: "Which component displays web pages in an Android app?",
+                options: ["Frame Layout", "Web View", "Grid Layout", "Linear Layout"],
+                correct: "b"
+            },
+            {
+                question: "What method is used to retrieve a SharedPreferences file?",
+                options: ["getPreferences()", "getSharedPreferences()", "openPreferences()", "loadPreferences()"],
+                correct: "b"
+            },
+            {
+                question: "Which activity lifecycle method is called before the activity becomes visible?",
+                options: ["onCreate()", "onStart()", "onResume()", "onPause()"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of an Intent in Android?",
+                options: ["Manage data storage", "Define UI layout", "Request action from another component", "Handle user gestures"],
+                correct: "c"
+            },
+            {
+                question: "Where should image files for drawables be stored in an Android project?",
+                options: ["app/src/main/java", "app/src/main/res/drawable", "app/src/main/assets", "app/src/main/values"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a Floating Action Button (FAB)?",
+                options: ["Display text input", "Provide a circular button floating above the layout", "Show a dropdown menu", "Handle background tasks"],
+                correct: "b"
+            },
+            {
+                question: "Which programming language combines object-oriented and functional features in Android?",
+                options: ["Java", "Kotlin", "C++", "Swift"],
+                correct: "b"
+            },
+            {
+                question: "What component enables system-wide event delivery in an Android app?",
+                options: ["Activity", "Service", "Broadcast Receiver", "Content Provider"],
+                correct: "c"
+            },
+            {
+                question: "Which permission is required to send SMS in an Android app?",
+                options: ["SEND_SMS", "RECEIVE_SMS", "READ_PHONE_STATE", "ACCESS_WIFI_STATE"],
+                correct: "a"
+            },
+            {
+                question: "Which layout organizes child elements into a single row or column?",
+                options: ["Constraint Layout", "Linear Layout", "Relative Layout", "Frame Layout"],
+                correct: "b"
+            },
+            {
+                question: "What method creates a Toast notification in Android?",
+                options: ["Toast.show()", "Toast.makeText()", "Toast.create()", "Toast.display()"],
+                correct: "b"
+            },
+            {
+                question: "Which storage option is always available in Android?",
+                options: ["External Storage", "Internal Storage", "SQLite Database", "Cloud Backup"],
+                correct: "b"
+            },
+            {
+                question: "Which lifecycle method is called when an activity is no longer visible?",
+                options: ["onPause()", "onStop()", "onDestroy()", "onRestart()"],
+                correct: "b"
+            },
+            {
+                question: "What does the parentActivityName attribute in AndroidManifest.xml specify?",
+                options: ["The main activity", "The parent activity for navigation", "The theme of the activity", "The intent action"],
+                correct: "b"
+            },
+            {
+                question: "Which style attribute defines the typeface of a TextView?",
+                options: ["android:textSize", "android:typeface", "android:textColor", "android:layout_width"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of an EditText in an Android app?",
+                options: ["Display images", "Select one option", "Enter and modify text", "Show notifications"],
+                correct: "c"
+            },
+            {
+                question: "What keyword in Kotlin declares a variable that cannot change?",
+                options: ["var", "val", "const", "let"],
+                correct: "b"
+            },
+            {
+                question: "What component manages shared app data accessible by other apps?",
+                options: ["Activity", "Service", "Broadcast Receiver", "Content Provider"],
+                correct: "d"
+            },
+            {
+                question: "Which element specifies the types of intents an activity can respond to?",
+                options: ["action", "category", "intent-filter", "uses-permission"],
+                correct: "c"
+            },
+            {
+                question: "Which layout is designed to display a single item on the screen?",
+                options: ["Linear Layout", "Frame Layout", "Grid Layout", "Constraint Layout"],
+                correct: "b"
+            },
+            {
+                question: "What method is used to write to a file in internal storage?",
+                options: ["openFileInput()", "openFileOutput()", "writeFile()", "saveFile()"],
+                correct: "b"
+            },
+            {
+                question: "Which lifecycle method is called when an activity is about to resume another activity?",
+                options: ["onCreate()", "onStart()", "onPause()", "onResume()"],
+                correct: "c"
+            },
+            {
+                question: "What does an implicit intent specify?",
+                options: ["Target activity class", "General action to perform", "Parent activity", "UI layout"],
+                correct: "b"
+            },
+            {
+                question: "Which folder contains style definitions in an Android project?",
+                options: ["res/drawable", "res/values", "res/layout", "res/menu"],
+                correct: "b"
+            },
+            {
+                question: "What type of button has no shadow and appears flat?",
+                options: ["Raised Button", "Floating Action Button", "Flat Button", "Image Button"],
+                correct: "c"
+            },
+            {
+                question: "Which database engine is used for SQLite in Android?",
+                options: ["MySQL", "PostgreSQL", "SQLite", "MongoDB"],
+                correct: "c"
+            },
+            {
+                question: "What does the getFilesDir() method return?",
+                options: ["Cache directory path", "External storage path", "Permanent storage path", "Database path"],
+                correct: "c"
+            },
+            {
+                question: "Which IDE uses Swift for iOS development?",
+                options: ["Android Studio", "Xcode", "Xamarin", "Corona"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a Broadcast Receiver in Android?",
+                options: ["Display UI", "Run background tasks", "Respond to system-wide events", "Store data"],
+                correct: "c"
+            },
+            {
+                question: "Which attribute sets the default icon for app components in AndroidManifest.xml?",
+                options: ["android:label", "android:icon", "android:theme", "android:name"],
+                correct: "b"
+            },
+            {
+                question: "Which layout creates a flat view hierarchy for complex layouts?",
+                options: ["Linear Layout", "Relative Layout", "Constraint Layout", "Table Layout"],
+                correct: "c"
+            },
+            {
+                question: "What method commits changes to a SharedPreferences file?",
+                options: ["save()", "apply()", "commit()", "store()"],
+                correct: "b"
+            },
+            {
+                question: "Which lifecycle method is called after onStop() when an activity returns?",
+                options: ["onRestart()", "onResume()", "onCreate()", "onStart()"],
+                correct: "a"
+            },
+            {
+                question: "What does the android:src attribute specify in an ImageView?",
+                options: ["Text content", "Image resource", "Layout size", "Click event"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a Snackbar in Android?",
+                options: ["Display web content", "Provide quick pop-up messages", "Manage data storage", "Handle gestures"],
+                correct: "b"
+            },
+            {
+                question: "Which programming language is used by Corona for mobile app development?",
+                options: ["Java", "Swift", "Lua", "C#"],
+                correct: "c"
+            },
+            {
+                question: "What is an example of a Content Provider's function?",
+                options: ["Play music in the background", "Manage user contacts", "Show a UI screen", "Send notifications"],
+                correct: "b"
+            },
+            {
+                question: "Which element adds an action to an intent filter?",
+                options: ["category", "action", "data", "intent"],
+                correct: "b"
+            },
+            {
+                question: "Which layout arranges child objects in a rectangular grid?",
+                options: ["Frame Layout", "Table Layout", "Grid Layout", "Linear Layout"],
+                correct: "c"
+            },
+            {
+                question: "What method deletes a file in Android?",
+                options: ["remove()", "delete()", "clear()", "erase()"],
+                correct: "b"
+            },
+            {
+                question: "Which lifecycle method is called when an activity is completely dismissed?",
+                options: ["onPause()", "onStop()", "onDestroy()", "onRestart()"],
+                correct: "c"
+            },
+            {
+                question: "What does an Intent extra provide?",
+                options: ["UI layout", "Additional information for the action", "Storage path", "Activity lifecycle"],
+                correct: "b"
+            },
+            {
+                question: "Where are menu resources defined in an Android project?",
+                options: ["res/values", "res/menu", "res/drawable", "res/layout"],
+                correct: "b"
+            },
+            {
+                question: "What type of button appears lifted from the screen with shading?",
+                options: ["Flat Button", "Raised Button", "Image Button", "Toggle Button"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of the Room persistence library?",
+                options: ["Manage UI layouts", "Cache SQLite database locally", "Handle network requests", "Display notifications"],
+                correct: "b"
+            },
+            {
+                question: "What method returns the cache directory path in Android?",
+                options: ["getFilesDir()", "getCacheDir()", "getExternalFilesDir()", "getDatabaseDir()"],
+                correct: "b"
+            },
+            {
+                question: "Which framework uses HTML5, CSS3, and JavaScript for cross-platform development?",
+                options: ["Xamarin", "Corona", "Apache Cordova", "Android Studio"],
+                correct: "c"
+            },
+            {
+                question: "What is an example of a Service's function in Android?",
+                options: ["Show a UI screen", "Play music in the background", "Manage contacts", "Send intents"],
+                correct: "b"
+            },
+            {
+                question: "Which attribute specifies the hardware features required by an app?",
+                options: ["uses-permission", "uses-feature", "intent-filter", "application"],
+                correct: "b"
+            },
+            {
+                question: "Which layout positions child objects relative to each other or the parent?",
+                options: ["Linear Layout", "Constraint Layout", "Relative Layout", "Frame Layout"],
+                correct: "c"
+            },
+            {
+                question: "What method retrieves a string from a SharedPreferences file?",
+                options: ["getString()", "getInt()", "getFloat()", "getBoolean()"],
+                correct: "a"
+            },
+            {
+                question: "Which lifecycle method is called before an activity starts interacting with the user?",
+                options: ["onCreate()", "onStart()", "onResume()", "onPause()"],
+                correct: "c"
+            },
+            {
+                question: "What does the android:onClick attribute specify in a Button?",
+                options: ["Image resource", "Click event handler", "Text content", "Layout size"],
+                correct: "b"
+            },
+            {
+                question: "Which drawable image format provides superior compression?",
+                options: ["PNG", "JPG", "WebP", "GIF"],
+                correct: "c"
+            },
+            {
+                question: "What is the purpose of a Switch in Android?",
+                options: ["Select multiple options", "Provide a slider for selection", "Display text input", "Show images"],
+                correct: "b"
+            },
+            {
+                question: "Which database operation retrieves rows meeting specific criteria?",
+                options: ["Insert", "Delete", "Update", "Select"],
+                correct: "d"
+            },
+            {
+                question: "What method creates an SQLite database in Android?",
+                options: ["openOrCreateDatabase()", "createDatabase()", "openDatabase()", "initDatabase()"],
+                correct: "a"
+            },
+            {
+                question: "Which benefit of mobile apps allows users to access information anytime?",
+                options: ["Personalization", "Productivity", "Convenience", "Security"],
+                correct: "c"
+            },
+            {
+                question: "What is the purpose of a Notification in Android?",
+                options: ["Display UI elements", "Provide reminders outside the app", "Store data", "Handle gestures"],
+                correct: "b"
+            },
+            {
+                question: "Which element in AndroidManifest.xml declares the app’s package name?",
+                options: ["application", "manifest", "activity", "intent-filter"],
+                correct: "b"
+            },
+            {
+                question: "Which layout is used to arrange child objects in rows and columns?",
+                options: ["Grid Layout", "Table Layout", "Linear Layout", "Frame Layout"],
+                correct: "b"
+            },
+            {
+                question: "What method removes a specific key-value pair from SharedPreferences?",
+                options: ["clear()", "remove()", "delete()", "erase()"],
+                correct: "b"
+            },
+            {
+                question: "Which lifecycle method is followed by onStart() when an activity becomes visible?",
+                options: ["onCreate()", "onResume()", "onPause()", "onStop()"],
+                correct: "b"
+            },
+            {
+                question: "What does the android:theme attribute specify in AndroidManifest.xml?",
+                options: ["App icon", "App theme", "App permissions", "App components"],
+                correct: "b"
+            },
+            {
+                question: "Which component is used to select one option from a dropdown menu?",
+                options: ["RadioButton", "Switch", "Spinner", "SeekBar"],
+                correct: "c"
+            },
+            {
+                question: "What is the purpose of the getExternalFilesDir() method?",
+                options: ["Access internal storage", "Access cache directory", "Access external storage", "Access database"],
+                correct: "c"
+            },
+            {
+                question: "Which challenge in mobile app development involves supporting different screen sizes?",
+                options: ["User security", "Market understanding", "Screen type support", "App performance"],
+                correct: "c"
+            },
+            {
+                question: "What is the purpose of the App Bar in Android?",
+                options: ["Display web content", "Provide navigation and actions", "Store data", "Handle inputs"],
+                correct: "b"
+            },
+            {
+                question: "Which permission is required to read external storage?",
+                options: ["WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE", "ACCESS_MEDIA", "STORAGE_ACCESS"],
+                correct: "b"
+            },
+            {
+                question: "Which layout has no nested view groups for complex layouts?",
+                options: ["Linear Layout", "Constraint Layout", "Relative Layout", "Frame Layout"],
+                correct: "b"
+            },
+            {
+                question: "What method is used to execute an SQL command in SQLite?",
+                options: ["execSQL()", "runSQL()", "querySQL()", "performSQL()"],
+                correct: "a"
+            },
+            {
+                question: "Which activity lifecycle method is called when the system destroys an activity due to rotation?",
+                options: ["onPause()", "onStop()", "onDestroy()", "onRestart()"],
+                correct: "c"
+            },
+            {
+                question: "What does the android:layout_gravity attribute specify in a Floating Action Button?",
+                options: ["Image source", "Position in the layout", "Text content", "Click event"],
+                correct: "b"
+            },
+            {
+                question: "Which style element includes attributes like typeface and textColor?",
+                options: ["theme", "style", "item", "resources"],
+                correct: "b"
+            },
+            {
+                question: "What is the purpose of a SeekBar in Android?",
+                options: ["Select one option", "Indicate progress level", "Display text", "Show images"],
+                correct: "b"
+            },
+            {
+                question: "Which method is used to retrieve the progress of a SeekBar?",
+                options: ["getProgress()", "getValue()", "getStatus()", "getLevel()"],
+                correct: "a"
+            },
+            {
+                question: "What is the purpose of the back stack in Android?",
+                options: ["Store app data", "Preserve activities", "Manage intents", "Handle notifications"],
+                correct: "b"
+            },
+            {
+                question: "Which component is used to create a dialog in Android?",
+                options: ["Toast", "Snackbar", "AlertDialog", "Notification"],
+                correct: "c"
+            },
+            {
+                question: "What is the file name of the Android manifest file?",
+                options: ["Manifest.xml", "AndroidManifest.xml", "AppManifest.xml", "Config.xml"],
+                correct: "b"
+            },
+            {
+                question: "Which phase of the app development workflow involves eliminating bugs?",
+                options: ["Setup", "Development", "Debugging", "Publishing"],
+                correct: "c"
+            },
+            {
+                question: "What does the android:text attribute specify in a Button?",
+                options: ["Click event", "Text content", "Image source", "Layout size"],
+                correct: "b"
+            }
+        ];
+
+        function loadQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <p>${index + 1}. ${q.question}</p>
+                    <div class="options">
+                        ${q.options.map((option, i) => `
+                            <label>
+                                <input type="radio" name="q${index}" value="${String.fromCharCode(97 + i)}">
+                                ${String.fromCharCode(97 + i).toUpperCase()}. ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const incorrect = [];
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && selected.value === q.correct) {
+                    score++;
+                } else {
+                    incorrect.push({
+                        question: q.question,
+                        selected: selected ? selected.value.toUpperCase() : 'None',
+                        correct: q.correct.toUpperCase(),
+                        correctAnswer: q.options[q.correct.charCodeAt(0) - 97]
+                    });
+                }
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h2>Results</h2>
+                <p>Score: ${score} out of ${questions.length}</p>
+                <h3>Incorrect Answers:</h3>
+                ${incorrect.length > 0 ? incorrect.map(i => `
+                    <p>Question: ${i.question}<br>
+                    Your answer: ${i.selected}<br>
+                    Correct answer: ${i.correct} (${i.correctAnswer})</p>
+                `).join('') : '<p>All answers are correct!</p>'}
+            `;
+        }
+
+        window.onload = loadQuiz;
+    </script>
+</body>
+</html>
